@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finaliser votre commande - Ma Boutique</title>
+    <link rel="stylesheet" href="commande.css">
+</head>
+<body>
+    <header>
+
+        <nav>
+            <h1>Ma Boutique</h1>
+            <ul>
+                <li><a href="acceuilS.html">accueil</a></li>
+                <li><a href="pratiquea.html">produits</a></li>
+                <li><a href="a_proposR.html">a_propos </a></li>
+                <li><a href="commandeg.html">commande</a></li>
+                <li><a href="contacts.html">Contact</a></li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <main class="container">
+        <h2>Finaliser votre commande</h2>
+
+        <div class="order-summary">
+            <h3>Récapitulatif de la commande</h3>
+            <div id="order-summary-items">
+                <p></p>
+            </div>
+            <p style="text-align: right; font-size: 1.2em; font-weight: bold; margin-top: 20px;">
+                Total à payer : <span id="order-total">0.00 $</span>
+            </p>
+        </div>
+
+        <div class="shipping-details">
+            <h3>Détails de livraison</h3>
+            <form id="shipping-form">
+                <div class="form-group">
+                    <label for="fullName">Nom complet :</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Adresse :</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">Ville :</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="postalCode">Code postal :</label>
+                    <input type="text" id="postalCode" name="postalCode" required>
+                </div>
+                <div class="form-group">
+                    <label for="country">Pays :</label>
+                    <input type="text" id="country" name="country" required>
+                </div>
+            </form>
+        </div>
+
+        <div class="payment-section">
+            <h3>Informations de paiement</h3>
+            <p></p>
+        </div>
+
+        <button id="confirm-order-btn" class="confirm-order-btn">Confirmer la commande et Payer</button>
+    </main>
+<footer>
+<script src="script.js">
+
+// --- Logique spécifique à la page de commande (commande.html) ---
+const orderSummaryItemsContainer = document.getElementById('order-summary-items');
+    const orderTotalElement = document.getElementById('order-total');
+    const confirmOrderButton = document.getElementById('confirm-order-btn');
+
+    if (orderSummaryItemsContainer && orderTotalElement && confirmOrderButton) { // Si on est sur la page de commande
+        function renderOrderSummary() {
+            orderSummaryItemsContainer.innerHTML = ''; // Effacer le contenu existant
+            let total = 0;
+
+            if (cart.length === 0) {
+                orderSummaryItemsContainer.innerHTML = '<p>Votre panier est vide. Veuillez retourner à l\'accueil pour ajouter des produits.</p>';
+                orderTotalElement.textContent = '0.00 €';
+                confirmOrderButton.disabled = true; // Désactiver le bouton si le panier est vide
+                return;
+            }
+
+            cart.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('cart-item'); // Réutilise le style du panier
+                const itemSubtotal = item.quantity * item.price;
+
+                itemElement.innerHTML = `
+                    <span>${item.name}</span>
+                    <span>${item.quantity} x ${item.price.toFixed(2)} €</span>
+                    <span>= ${itemSubtotal.toFixed(2)} €</span>
+                `;
+                orderSummaryItemsContainer.appendChild(itemElement);
+                total += itemSubtotal;
+            });
+
+            orderTotalElement.textContent = total.toFixed(2) + ' €';
+            confirmOrderButton.disabled = false; // Activer le bouton si le panier n'est pas vide
+        }
+
+        // Gérer la confirmation de la commande
+        confirmOrderButton.addEventListener('click', (event) => {
+            event.preventDefault(); // Empêcher l'envoi par défaut du formulaire, s'il y en a un
+
+            if (cart.length === 0) {
+                alert("Votre panier est vide. Impossible de passer commande.");
+                return;
+            }
+
+            // Récupérer les informations de livraison
+            const fullName = document.getElementById('fullName').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const postalCode = document.getElementById('postalCode').value.trim();
+            const country = document.getElementById('country').value.trim();
+
+            // Validation simple
+            if (!fullName || !address || !city || !postalCode || !country) {
+                alert("Veuillez remplir toutes les informations de livraison.");
+                return;
+            }
+
+            // Simuler le traitement de la commande (dans une vraie application, cela enverrait des données à un serveur)
+            const orderData = {
+                items: cart,
+                shippingInfo: {
+                    fullName,
+                    address,
+                    city,
+                    postalCode,
+                    country
+                },
+                total: parseFloat(orderTotalElement.textContent) // Obtenir le total final calculé
+            };
+
+            console.log("Simulation de la confirmation de commande avec les données :", orderData);
+            alert("Commande confirmée ! (Ceci est une simulation sans paiement réel ni sauvegarde sur serveur.)");
+
+            // --- IMPORTANT POUR UN SCÉNARIO RÉEL ---
+            // Dans un vrai site e-commerce, APRÈS un paiement réussi et la création de la commande côté serveur :
+            // 1. Vider le panier de localStorage
+            localStorage.removeItem('cart');
+            // 2. Rediriger vers une page de confirmation de commande
+            window.location.href = 'confirmation.html'; // Nous allons créer cette page ensuite !
+        });
+
+        renderOrderSummary(); // Afficher le récapitulatif de la commande au chargement de la page
+    }
+
+</script>
+</footer>
+</body>
+</html>

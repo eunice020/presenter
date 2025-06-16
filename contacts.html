@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contactez-nous - nasraya service</title>
+    <link rel="stylesheet" href="contacts.css">
+</head>
+<body>
+    <header>
+
+        <nav>
+            <h1>nasraya service</h1>
+            <ul>
+                <li><a href="acceuilS.html">accueil</a></li>
+                <li><a href="pratiquea.html">produits</a></li>
+                <li><a href="a_proposR.html">a_propos </a></li>
+                <li><a href="commandeg.html">commande</a></li>
+                <li><a href="contacts.html">Contact</a></li>
+                <li><a href="publiciter.html">publiciter</a></li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <main class="container">
+        <h2>Contactez-nous</h2>
+
+        <div class="info-section">
+            <h3>Envoyez-nous un message</h3>
+            <form id="contact-form" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Votre Nom :</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Votre Email :</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Sujet :</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Votre Message :</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit">Envoyer le Message</button>
+            </form>
+        </div>
+
+        <div class="info-section">
+            <h3>Nos Coordonnées</h3>
+            <p><strong>Adresse :</strong> limete premier rue quartier mososo avenue des ecoles</p>
+            <p><strong>Téléphone :</strong> <a href="tel:+243974629713">0974629713</a></p>
+            <p><strong>Email :</strong> <a href="mailto:minzenieunice5@.com">minzenieunice5@.com</a> </p>
+        </div>
+    </main>
+
+    <script src="script.js">
+
+// --- Logique spécifique à la page Contact (contact.html) ---
+const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Empêche le rechargement de la page
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            // En un vrai site, ici vous enverriez ces données à un serveur (backend)
+            // qui les stockerait ou enverrait un email.
+            console.log("Message de contact simulé envoyé :");
+            console.log("Nom :", name);
+            console.log("Email :", email);
+            console.log("Sujet :", subject);
+            console.log("Message :", message);
+
+            alert("Votre message a été envoyé avec succès ! Nous vous répondrons bientôt. (Simulation)");
+            contactForm.reset(); // Vide le formulaire après "envoi"
+        });
+    }
+
+    // --- Logique spécifique à la page FAQ (faq.html) ---
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    if (faqQuestions.length > 0) {
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling; // L'élément suivant est la réponse
+                const arrow = question.querySelector('.arrow');
+
+                // Basculer la classe 'active' pour la question (pour la rotation de la flèche)
+                question.classList.toggle('active');
+
+                // Basculer la classe 'show' pour la réponse (pour l'afficher/la cacher)
+                if (answer.classList.contains('show')) {
+                    answer.classList.remove('show');
+                } else {
+                    // Fermer les autres réponses ouvertes avant d'ouvrir celle-ci (optionnel)
+                    document.querySelectorAll('.faq-answer.show').forEach(openAnswer => {
+                        openAnswer.classList.remove('show');
+                        openAnswer.previousElementSibling.classList.remove('active'); // Enlève la classe active de la question précédente
+                    });
+                    answer.classList.add('show');
+                }
+            });
+        });
+    }
+
+    // --- MISE À JOUR DE LA BARRE DE NAVIGATION DANS TOUTES LES PAGES ---
+    // Il est important de mettre à jour le nombre d'articles du panier sur toutes les pages.
+    // Cette fonction est déjà dans le script.js, assurez-vous qu'elle est appelée au chargement.
+    updateCartCount();
+
+    </script>
+</body>
+</html>
